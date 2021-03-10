@@ -50,4 +50,30 @@ Select  count(Song.GenreId), Genre.Label from Genre left join Song on Genre.Id =
 
 Select count(Album.Label), Artist.ArtistName from Artist left join Album on Artist.Id = Album.ArtistId group by Artist.ArtistName having(count(Album.Label))> 1;
 
-Select max(Album.AlbumLength) as LongestAlbum from Album;
+Select  Album.Title, 
+	Album.AlbumLength 
+	from Album 
+	Where Album.AlbumLength = (
+		select max(Album.AlbumLength) 
+		from Album
+		);
+
+Select Song.Title,
+	Song.SongLength
+	from Song
+	Where Song.SongLength = (
+	select max(song.SongLength)
+	from Song
+	);
+
+Select
+	Album.Title,
+	Song.Title,
+	Song.SongLength
+	from Album
+	left Join Song 
+	on Song.AlbumId = Album.Id
+	Where Song.SongLength = (
+	select max(song.SongLength)
+	from Song
+	);
